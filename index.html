@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Penghitung Luas Tabung</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Aplikasi Penghitung Luas</h1>
+    <p>Masukkan data untuk menghitung luas tabung dan bagian-bagiannya</p>
+  </header>
+
+  <form class="form">
+    <label for="tinggi">Tinggi Tabung (cm):</label>
+    <input type="number" id="tinggi" placeholder="Masukkan tinggi tabung" required>
+
+    <label for="jari-jari">Jari-Jari Lingkaran (cm):</label>
+    <input type="number" id="jari-jari" placeholder="Masukkan jari-jari lingkaran" required>
+
+    <div class="menu">
+      <h3>Pilih Perhitungan:</h3>
+      <label>
+        <input type="radio" name="perhitungan" value="luas-lingkaran">
+        Luas Lingkaran
+      </label>
+      <label>
+        <input type="radio" name="perhitungan" value="luas-persegi-panjang">
+        Luas Persegi Panjang (Alas Tabung)
+      </label>
+      <label>
+        <input type="radio" name="perhitungan" value="luas-permukaan-tabung">
+        Luas Permukaan Tabung
+      </label>
+    </div>
+
+    <button type="submit">Hitung</button>
+  </form>
+
+  <div class="result">
+    <h3>Hasil Perhitungan:</h3>
+    <p id="hasil">Silakan masukkan data dan pilih perhitungan untuk melihat hasilnya.</p>
+  </div>
+</div>
+
+
+
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const tinggi = parseFloat(document.getElementById('tinggi').value);
+    const jariJari = parseFloat(document.getElementById('jari-jari').value);
+    const pilihan = document.querySelector('input[name="perhitungan"]:checked')?.value;
+    let hasil = "";
+
+    if (isNaN(tinggi) || isNaN(jariJari) || tinggi <= 0 || jariJari <= 0) {
+      hasil = "Input tidak valid! Pastikan Anda memasukkan nilai positif.";
+    } else {
+      switch (pilihan) {
+        case "luas-lingkaran":
+          hasil = `Luas Lingkaran: ${Math.PI * jariJari * jariJari} cm²`;
+          break;
+        case "luas-persegi-panjang":
+          const keliling = 2 * Math.PI * jariJari;
+          hasil = `Luas Persegi Panjang (Alas Tabung): ${keliling * tinggi} cm²`;
+          break;
+        case "luas-permukaan-tabung":
+          const luasLingkaran = Math.PI * jariJari * jariJari;
+          const luasSelimut = 2 * Math.PI * jariJari * tinggi;
+          hasil = `Luas Permukaan Tabung: ${(2 * luasLingkaran) + luasSelimut} cm²`;
+          break;
+        default:
+          hasil = "Silakan pilih perhitungan terlebih dahulu.";
+      }
+    }
+    document.getElementById('hasil').textContent = hasil;
+  });
+</script>
+</body>
+</html>
